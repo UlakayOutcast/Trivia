@@ -1,0 +1,17 @@
+<Ui xsi:schemaLocation="http://www.blizzard.com/wow/ui/">
+<Script file="Trivia.lua"/>
+	<Frame name="Trivia_core">
+	<Scripts>
+	<OnLoad> 
+		Trivia_OnLoad();  
+	</OnLoad>
+	<OnEvent> 
+		Trivia_OnEvent(event, arg1);
+	</OnEvent>
+	<OnUpdate> 
+		Trivia_OnUpdate();
+	</OnUpdate>
+</Scripts>
+</Frame>
+</Ui>
+
