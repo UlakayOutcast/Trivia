@@ -10,4 +10,5 @@
 ## OptionalDeps:
 ## RequiredDeps:
 Trivia.lua
+Trivia_Emo.lua
 Trivia.xml
