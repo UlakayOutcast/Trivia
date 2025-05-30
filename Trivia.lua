@@ -73,8 +73,8 @@ end;
 function TRIVIA_CommandHandler(cmd)
 	
 	if string.sub(cmd, 1, 2) == "" then 
-		if TRIVIA_CONF["language"] == "RU" then Info_Print("Предоставляет команды: trivia RU/EN - переключает язык интерфейса, regen - отображает регенирацию здаровья и маны, kill - счётчик убийст (глобальный, сессионный, временный), calculator (5+5) - калькулятор. link - линк предмета из базы."); end;
-		if TRIVIA_CONF["language"] == "EN" then Info_Print("Provides commands: trivia RU/EN - switches the interface language, regen - displays the regeneration of health and mana, kill - kill counter (global, session, temporary), calculator (5+5) - calculator. link - link of the item from the database."); end;
+		if TRIVIA_CONF["language"] == "RU" then Info_Print("Предоставляет команды: trivia RU/EN - переключает язык интерфейса, regen - отображает регенирацию здаровья и маны, kill - счётчик убийст (глобальный, сессионный, временный), calculator (5+5) - калькулятор. link - линк предмета из базы. /rest - Показать количество отдыха."); end;
+		if TRIVIA_CONF["language"] == "EN" then Info_Print("Provides commands: trivia RU/EN - switches the interface language, regen - displays the regeneration of health and mana, kill - kill counter (global, session, temporary), calculator (5+5) - calculator. link - link of the item from the database. /rest - Show the amount of rest."); end;
 	end;
 	if string.sub(cmd, 1, 2) == "ru" or string.sub(cmd, 8, 9) == "RU" then TRIVIA_CONF["language"] = "RU";Info_Print("Язык: "..COLOR_GREEN2(TRIVIA_CONF["language"]).."."); end;
 	if string.sub(cmd, 1, 2) == "en" or string.sub(cmd, 8, 9) == "EN" then TRIVIA_CONF["language"] = "EN";Info_Print("Language: "..COLOR_GREEN2(TRIVIA_CONF["language"]).."."); end;
