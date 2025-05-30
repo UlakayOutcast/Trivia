@@ -11,4 +11,3 @@ A few new emotions:
 /coin
 /woof
 /meow
-A few new emotions: /sneeze /dehydration /splash /sad /pocket /coin /woof /meow
