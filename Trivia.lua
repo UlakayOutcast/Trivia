@@ -127,7 +127,7 @@ end;
 
 function REGEN_CommandHandler(cmd)
 	if string.sub(cmd, 1, 4) == "" then 
-		if Regen == 0 then Regen = 1; else Regen = 0; end;
+		if Regen == 0 then Regen = 2; else Regen = 0; end;
 	else
 		Regen = tonumber(string.sub(cmd, 1, 4));
 	end;
