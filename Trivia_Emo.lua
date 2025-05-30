@@ -8,10 +8,6 @@ function TarExNa()
 end;
 function Trivia_Emo()
 	local sex; if UnitSex("player")==3 then sex="she";end; if UnitSex("player")==2 then sex="he";end;
-	-- local TExist,TName=UnitExists("target");if TName then TExist=UnitName("target");end;
-	-- if strfind(cmd,"sneeze")then if TExist then SCM("sneezes loudly at "..TName..".","emote"); else SCM("sneezes loudly.","emote");end;end;
-	-- local TName;
-	-- SlashCmdList["SFE"] = Soulful_CommandHandler;
 	SLASH_sneeze1 = "/sneeze"; SLASH_sneeze2 = "/chih";
 	SLASH_dehydration1 = "/dehydration"; SLASH_dehydration2 = "/water";
 	SLASH_splash1 = "/splash"; SLASH_splash2 = "/shlepok";
