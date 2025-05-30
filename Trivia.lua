@@ -65,6 +65,8 @@ function Trivia_OnLoad()
 	SlashCmdList["SPAM"] = SPAM_CommandHandler;
 	SLASH_SPAM1 = "/spam";
 	
+	Trivia_Emo();
+	
 	Info_Print("Trivia ".. COLOR_GREEN2(TRIVIA_VERSION) .." loaded. /trivia");
 end;
 
