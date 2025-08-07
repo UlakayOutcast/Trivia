@@ -10,7 +10,7 @@ function Trivia_Emo()
 	local sex; if UnitSex("player")==3 then sex="she";end; if UnitSex("player")==2 then sex="he";end;
 	SLASH_sneeze1 = "/sneeze"; SLASH_sneeze2 = "/chih";
 	SLASH_dehydration1 = "/dehydration"; SLASH_dehydration2 = "/water";
-	SLASH_splash1 = "/buttocks"; SLASH_splash2 = "/shlepok";
+	SLASH_buttocks1 = "/buttocks"; SLASH_splash2 = "/shlepok";
 	SLASH_sad1 = "/sad"; SLASH_sad2 = "/sadness";
 	SLASH_pocket1 = "/pocket"; SLASH_pocket2 = "/steal"; SLASH_pocket3 = "/snitch";
 	SLASH_coin1 = "/coin"; SLASH_coin2 = "/money";
@@ -24,7 +24,7 @@ function Trivia_Emo()
 		if TarExNa() then SEmo("shows her empty water bottle to"..TarExNa().."."); else SEmo("looks dehydrated.");end;
 	end;
 	
-	SlashCmdList["splash"] = function(cmd)
+	SlashCmdList["buttocks"] = function(cmd)
 		if TarExNa() then SEmo("slaps "..TarExNa().."'s buttocks. Nice."); else SEmo("slaps his buttocks. Nice.");end;
 	end;
 	
