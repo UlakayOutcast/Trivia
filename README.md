@@ -10,7 +10,7 @@ Enter /Trivia for info.
 A few new emotions:
 /sneeze
 /dehydration
-/splash
+/buttocks
 /sad
 /pocket
 /coin
