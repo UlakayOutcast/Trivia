@@ -3,7 +3,7 @@
 ## Notes: Useful little things.		 Enter /Trivia for info
 ## Notes Ru: Полезные мелочи.		 Введите /Trivia для получения информации
 ## Author: Ulukay Outcast.
-## Version: 0.21
+## Version: 0.22
 ## SavedVariables:
 ## SavedVariablesPerCharacter: TRIVIA_CONF
 ## Dependencies:

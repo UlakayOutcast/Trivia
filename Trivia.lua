@@ -1,10 +1,10 @@
 -- Trivia
 
-local TRIVIA_VERSION = "0.21"
+local TRIVIA_VERSION = "0.22"
 local SecondsCounter=0;
 local Regen;local HealthPoint={};local ManaPoint={};local TimePoint=0;
 local Kill_Counter = {};
-local Coins_Counter = 0;
+local Coins_Temp = 0;
 local Strike_Counter = {};
 
 --Вспомогательная переменная для скрипта Arcane Surg + Fire Blast
@@ -38,7 +38,7 @@ function Trivia_OnLoad()
 	Strike_Counter[1]=true;Strike_Counter[2]=0;Strike_Counter[3]=0;Strike_Counter[4]=0;Strike_Counter[5]=0;Strike_Counter[6]=0;Strike_Counter[6]=0;Strike_Counter[7]=0;
 	
 	if not TRIVIA_CONF["Coins_Counter"] then TRIVIA_CONF["Coins_Counter"] = 0; end;
-	Coins_Counter=GetMoney();
+	Coins_Temp=GetMoney();
 	
 	SlashCmdList["TRIVIA"] = TRIVIA_CommandHandler;
 	SLASH_TRIVIA1 = "/trivia";
@@ -235,8 +235,8 @@ function COINS_CommandHandler(cmd)
 		if TRIVIA_CONF["language"] == "EN" then Info_Print("The coin counter has been reset."); end;
 	end;
 	if string.sub(cmd, 1, 2) == "" then 
-		if TRIVIA_CONF["language"] == "RU" then Info_Print(COLOR_HUNTER("Всего монет заработано: "..COLOR_GREEN2(Coins_Counter))); end;
-		if TRIVIA_CONF["language"] == "EN" then Info_Print(COLOR_HUNTER("Total coins earned: "..COLOR_GREEN2(Coins_Counter))); end;
+		if TRIVIA_CONF["language"] == "RU" then Info_Print(COLOR_HUNTER("Всего монет заработано: "..COLOR_GREEN2(TRIVIA_CONF["Coins_Counter"]))); end;
+		if TRIVIA_CONF["language"] == "EN" then Info_Print(COLOR_HUNTER("Total coins earned: "..COLOR_GREEN2(TRIVIA_CONF["Coins_Counter"]))); end;
 	end;
 end;
 function STRIKE_CommandHandler(cmd)
@@ -285,7 +285,12 @@ end;
 
 
 function Trivia_OnUpdate() 
-		
+	
+	if not TRIVIA_CONF then TRIVIA_CONF = {}; end;
+	if not TRIVIA_CONF["language"] then TRIVIA_CONF["language"] = "EN"; end;
+	if not TRIVIA_CONF["Kill_Counter"] then TRIVIA_CONF["Kill_Counter"] = 0; end;
+	if not TRIVIA_CONF["Coins_Counter"] then TRIVIA_CONF["Coins_Counter"] = 0; end;
+	
 	if Regen>0 then 
 		if HealthPoint[2]==nil then HealthPoint[2]=0;end;
 		if ManaPoint[2]==nil then ManaPoint[2]=0;end;
@@ -334,13 +339,10 @@ function Trivia_OnUpdate()
 			end;
 		end;
 		
-		-- if Coins_Counter ~= GetMoney() then 
-			if Coins_Counter < GetMoney() then 
-				TRIVIA_CONF["Coins_Counter"]=TRIVIA_CONF["Coins_Counter"]+(GetMoney()-Coins_Counter);
-				Coins_Counter=GetMoney();
-			end;
-			-- if Coins_Counter > GetMoney(); then Coins_Counter=GetMoney();end;
-		-- end;
+		if Coins_Temp < GetMoney() then 
+			TRIVIA_CONF["Coins_Counter"]=TRIVIA_CONF["Coins_Counter"]+(GetMoney()-Coins_Temp);
+			Coins_Temp=GetMoney();
+		end;
 		
 		if ArcaneSurg>0 then ArcaneSurg=ArcaneSurg-1; end;
 		
