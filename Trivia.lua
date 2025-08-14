@@ -38,7 +38,7 @@ function Trivia_OnLoad()
 	Strike_Counter[1]=true;Strike_Counter[2]=0;Strike_Counter[3]=0;Strike_Counter[4]=0;Strike_Counter[5]=0;Strike_Counter[6]=0;Strike_Counter[6]=0;Strike_Counter[7]=0;
 	
 	if not TRIVIA_CONF["Coins_Counter"] then TRIVIA_CONF["Coins_Counter"] = 0; end;
-	Coins_Temp=GetMoney();print(Coins_Temp)
+	Coins_Temp=GetMoney();
 	
 	SlashCmdList["TRIVIA"] = TRIVIA_CommandHandler;
 	SLASH_TRIVIA1 = "/trivia";
@@ -230,21 +230,16 @@ end;
 
 function COINS_CommandHandler(cmd)
 	if strfind(cmd,"reset") then 
-		TRIVIA_CONF["Coins_Counter"]=0;
+		TRIVIA_CONF["Coins_Counter"]=0;Coins_Temp=GetMoney();
 		if TRIVIA_CONF["language"] == "RU" then Info_Print("Счётчик монет сброшен."); end;
 		if TRIVIA_CONF["language"] == "EN" then Info_Print("The coin counter has been reset."); end;
 	end;
 	if string.sub(cmd, 1, 2) == "" then  
-		-- local temp="|"..tointeger(TRIVIA_CONF["Coins_Counter"]/100/100).." G|"..tointeger(TRIVIA_CONF["Coins_Counter"]/100).." S|"..tointeger(TRIVIA_CONF["Coins_Counter"]).." C|";
-		-- local temp="|"..tonumber(TRIVIA_CONF["Coins_Counter"]/100/100).." G|"..tonumber(TRIVIA_CONF["Coins_Counter"]/100).." S|"..tonumber(TRIVIA_CONF["Coins_Counter"]).." C|";
-		-- local temp=string.sub(TRIVIA_CONF["Coins_Counter"],string.len(TRIVIA_CONF["Coins_Counter"])-6,string.len(TRIVIA_CONF["Coins_Counter"])-4).."g "..string.sub(TRIVIA_CONF["Coins_Counter"],string.len(TRIVIA_CONF["Coins_Counter"])-3,string.len(TRIVIA_CONF["Coins_Counter"])-2).."s "..string.sub(TRIVIA_CONF["Coins_Counter"],string.len(TRIVIA_CONF["Coins_Counter"])-1,string.len(TRIVIA_CONF["Coins_Counter"])-0).."s";
-		-- local temp=string.sub(TRIVIA_CONF["Coins_Counter"],7-string.len(TRIVIA_CONF["Coins_Counter"]),8-string.len(TRIVIA_CONF["Coins_Counter"])).."g "..string.sub(TRIVIA_CONF["Coins_Counter"],5-string.len(TRIVIA_CONF["Coins_Counter"]),6-string.len(TRIVIA_CONF["Coins_Counter"])).."s "..string.sub(TRIVIA_CONF["Coins_Counter"],3-string.len(TRIVIA_CONF["Coins_Counter"]),4-string.len(TRIVIA_CONF["Coins_Counter"])).."c";
-		-- local TG=string.sub(TRIVIA_CONF["Coins_Counter"],5,6)
-		-- local TS=string.sub(TRIVIA_CONF["Coins_Counter"],3,4)
-		-- local TC=string.sub(TRIVIA_CONF["Coins_Counter"],1,2)
-		local temp=TRIVIA_CONF["Coins_Counter"];
-		if TRIVIA_CONF["language"] == "RU" then Info_Print(COLOR_HUNTER("Всего монет заработано: "..COLOR_GREEN2(temp))); end;
-		if TRIVIA_CONF["language"] == "EN" then Info_Print(COLOR_HUNTER("Total coins earned: "..COLOR_GREEN2(temp))); end;
+		local gold = floor(TRIVIA_CONF["Coins_Counter"]/ 100 / 100)
+		local silver = floor(math.mod((TRIVIA_CONF["Coins_Counter"]/100),100))
+		local copper = floor(math.mod(TRIVIA_CONF["Coins_Counter"],100))
+		if TRIVIA_CONF["language"] == "RU" then Info_Print(COLOR_HUNTER("Всего монет заработано: "..COLOR_GREEN2(gold.."g "..silver.."s "..copper.."c"))); end;
+		if TRIVIA_CONF["language"] == "EN" then Info_Print(COLOR_HUNTER("Total coins earned: "..COLOR_GREEN2(gold.."g "..silver.."s "..copper.."c"))); end;
 	end;
 end;
 function STRIKE_CommandHandler(cmd)
@@ -298,6 +293,7 @@ function Trivia_OnUpdate()
 	if not TRIVIA_CONF["language"] then TRIVIA_CONF["language"] = "EN"; end;
 	if not TRIVIA_CONF["Kill_Counter"] then TRIVIA_CONF["Kill_Counter"] = 0; end;
 	if not TRIVIA_CONF["Coins_Counter"] then TRIVIA_CONF["Coins_Counter"] = 0; end;
+	if Coins_Temp==(0 or nil) then Coins_Temp=GetMoney();end;
 	
 	if Regen>0 then 
 		if HealthPoint[2]==nil then HealthPoint[2]=0;end;
