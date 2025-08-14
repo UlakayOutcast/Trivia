@@ -4,6 +4,7 @@ local TRIVIA_VERSION = "0.21"
 local SecondsCounter=0;
 local Regen;local HealthPoint={};local ManaPoint={};local TimePoint=0;
 local Kill_Counter = {};
+local Coins_Counter = 0;
 local Strike_Counter = {};
 
 --Вспомогательная переменная для скрипта Arcane Surg + Fire Blast
@@ -19,6 +20,15 @@ local function Info_Print(msg,r,g,b,frame,id)
 	if ( DEFAULT_CHAT_FRAME ) then 	DEFAULT_CHAT_FRAME:AddMessage(msg, r, g, b, id);end;
 end;
 
+local function GotBuff(name,target) 
+	if not target then target="player";end;
+	local tex,cnt,ix;
+	for ix = 1,32 do 
+		tex,cnt = UnitBuff(target,ix);
+		if not tex then return; end;
+		if strfind(tex,name) then return cnt; end;
+	end;
+end;
 function Trivia_OnLoad()
 	
 	if not TRIVIA_CONF then TRIVIA_CONF = {}; end;
@@ -26,6 +36,9 @@ function Trivia_OnLoad()
 	if not TRIVIA_CONF["Kill_Counter"] then TRIVIA_CONF["Kill_Counter"] = 0; end;
 	Kill_Counter[3]=0;
 	Strike_Counter[1]=true;Strike_Counter[2]=0;Strike_Counter[3]=0;Strike_Counter[4]=0;Strike_Counter[5]=0;Strike_Counter[6]=0;Strike_Counter[6]=0;Strike_Counter[7]=0;
+	
+	if not TRIVIA_CONF["Coins_Counter"] then TRIVIA_CONF["Coins_Counter"] = 0; end;
+	Coins_Counter=GetMoney();
 	
 	SlashCmdList["TRIVIA"] = TRIVIA_CommandHandler;
 	SLASH_TRIVIA1 = "/trivia";
@@ -43,6 +56,10 @@ function Trivia_OnLoad()
 	-- this:RegisterEvent("CHAT_MSG_CHANNEL");
 	SlashCmdList["KILL"] = KILL_CommandHandler;
 	SLASH_KILL1 = "/kill";
+	
+	--counter
+	SlashCmdList["COINS"] = COINS_CommandHandler;
+	SLASH_COINS1 = "/coins";
 	
 	--Calculator 
 	this:RegisterEvent("UNIT_COMBAT");
@@ -211,6 +228,17 @@ function KILL_CommandHandler(cmd)
 	end;
 end;
 
+function COINS_CommandHandler(cmd)
+	if strfind(cmd,"reset") then 
+		TRIVIA_CONF["Coins_Counter"]=0;
+		if TRIVIA_CONF["language"] == "RU" then Info_Print("Счётчик монет сброшен."); end;
+		if TRIVIA_CONF["language"] == "EN" then Info_Print("The coin counter has been reset."); end;
+	end;
+	if string.sub(cmd, 1, 2) == "" then 
+		if TRIVIA_CONF["language"] == "RU" then Info_Print(COLOR_HUNTER("Всего монет заработано: "..COLOR_GREEN2(Coins_Counter))); end;
+		if TRIVIA_CONF["language"] == "EN" then Info_Print(COLOR_HUNTER("Total coins earned: "..COLOR_GREEN2(Coins_Counter))); end;
+	end;
+end;
 function STRIKE_CommandHandler(cmd)
 	if strfind(cmd,"show") then 
 		if TRIVIA_CONF["language"] == "RU" then Info_Print(COLOR_HUNTER("Всего атак: "..COLOR_GREEN2(Strike_Counter[2]))); end;
@@ -306,8 +334,24 @@ function Trivia_OnUpdate()
 			end;
 		end;
 		
+		-- if Coins_Counter ~= GetMoney() then 
+			if Coins_Counter < GetMoney() then 
+				TRIVIA_CONF["Coins_Counter"]=TRIVIA_CONF["Coins_Counter"]+(GetMoney()-Coins_Counter);
+				Coins_Counter=GetMoney();
+			end;
+			-- if Coins_Counter > GetMoney(); then Coins_Counter=GetMoney();end;
+		-- end;
+		
 		if ArcaneSurg>0 then ArcaneSurg=ArcaneSurg-1; end;
 		
+		-- if GotBuff("Ability_Druid_CatForm") and not GotBuff("INV_Misc_Orb") then 
+			-- print("1")
+			-- RunMacro("!OrbOfDeception")
+			-- RunSuperMacro("!OrbOfDeception")
+			-- RunBody("/cast Orb of Deception")
+			-- RunLine("/script CastSpellByName('Orb of Deception')")
+			-- Macro("orb")
+		-- end;
 	end;
 end;
 
