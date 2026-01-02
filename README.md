@@ -7,6 +7,7 @@ Enter /Trivia for info.
 /calculator (5+5) - calculator.
 /link - link of the item from the database.
 /rest - Show the amount of rest.
+/ainv - auto invitations.
 
 A few new emotions:
 /sneeze
