@@ -6,6 +6,7 @@ local Regen;local HealthPoint={};local ManaPoint={};local TimePoint=0;
 local Kill_Counter = {};
 local Coins_Temp = 0;
 local Strike_Counter = {};
+local Auto_Invite = {};
 
 --Вспомогательная переменная для скрипта Arcane Surg + Fire Blast
 -- /script local ix,sw;for ix=1,99 do if GetSpellName(ix,1)=="Arcane Surge"then if GetSpellCooldown(ix,1)>0 or ArcaneSurg==0 then CastSpellByName("Fire Blast");else CastSpellByName("Arcane Surge");ArcaneSurg=0;end;break;end;end;
@@ -53,6 +54,9 @@ function Trivia_OnLoad()
 	this:RegisterEvent("CHAT_MSG_COMBAT_XP_GAIN");
 	this:RegisterEvent("CHAT_MSG_COMBAT_HONOR_GAIN");
 	this:RegisterEvent("COMBAT_TEXT_UPDATE");
+	this:RegisterEvent("CHAT_MSG_SAY");
+	this:RegisterEvent("CHAT_MSG_YELL");
+	this:RegisterEvent("CHAT_MSG_WHISPER");
 	-- this:RegisterEvent("CHAT_MSG_CHANNEL");
 	SlashCmdList["KILL"] = KILL_CommandHandler;
 	SLASH_KILL1 = "/kill";
@@ -78,6 +82,10 @@ function Trivia_OnLoad()
 	SlashCmdList["LINK"] = LINK_CommandHandler;
 	SLASH_LINK1 = "/link";
 	
+	--AINV 
+	SlashCmdList["AINV"] = AINV_CommandHandler;
+	SLASH_AINV1 = "/ainv";
+	
 	--Spam 
 	SlashCmdList["SPAM"] = SPAM_CommandHandler;
 	SLASH_SPAM1 = "/spam";
@@ -90,8 +98,8 @@ end;
 function TRIVIA_CommandHandler(cmd)
 	
 	if string.sub(cmd, 1, 2) == "" then 
-		if TRIVIA_CONF["language"] == "RU" then Info_Print("Предоставляет команды: trivia RU/EN - переключает язык интерфейса, regen - отображает регенирацию здаровья и маны, kill - счётчик убийст (глобальный, сессионный, временный), calculator (5+5) - калькулятор. link - линк предмета из базы. /rest - Показать количество отдыха."); end;
-		if TRIVIA_CONF["language"] == "EN" then Info_Print("Provides commands: trivia RU/EN - switches the interface language, regen - displays the regeneration of health and mana, kill - kill counter (global, session, temporary), calculator (5+5) - calculator. link - link of the item from the database. /rest - Show the amount of rest."); end;
+		if TRIVIA_CONF["language"] == "RU" then Info_Print("Предоставляет команды: trivia RU/EN - переключает язык интерфейса, regen - отображает регенирацию здаровья и маны, kill - счётчик убийст (глобальный, сессионный, временный), calculator (5+5) - калькулятор. link - линк предмета из базы. /rest - Показать количество отдыха. /ainv - авто приглашения."); end;
+		if TRIVIA_CONF["language"] == "EN" then Info_Print("Provides commands: trivia RU/EN - switches the interface language, regen - displays the regeneration of health and mana, kill - kill counter (global, session, temporary), calculator (5+5) - calculator. link - link of the item from the database. /rest - Show the amount of rest. /ainv - auto invitations."); end;
 	end;
 	if string.sub(cmd, 1, 2) == "ru" or string.sub(cmd, 8, 9) == "RU" then TRIVIA_CONF["language"] = "RU";Info_Print("Язык: "..COLOR_GREEN2(TRIVIA_CONF["language"]).."."); end;
 	if string.sub(cmd, 1, 2) == "en" or string.sub(cmd, 8, 9) == "EN" then TRIVIA_CONF["language"] = "EN";Info_Print("Language: "..COLOR_GREEN2(TRIVIA_CONF["language"]).."."); end;
@@ -150,6 +158,39 @@ function REGEN_CommandHandler(cmd)
 	end;
 	if TRIVIA_CONF["language"] == "RU" then Info_Print("Временная петля регенерации: "..COLOR_GREEN2(Regen).." seconds."); end;
 	if TRIVIA_CONF["language"] == "EN" then Info_Print("Regen time loop: "..COLOR_GREEN2(Regen).." секунд."); end;
+end;
+
+function AINV_CommandHandler(cmd)
+	local ix=1;
+	local scmd=string.gsub(cmd,"(ainv)(%s*)","")
+	if scmd == "" then 
+		if TRIVIA_CONF["language"] == "RU" then Info_Print("Команды: "..COLOR_GREEN2("show,reset или любое слово в качестве триггера").."."); end;
+		if TRIVIA_CONF["language"] == "EN" then Info_Print("Commands: "..COLOR_GREEN2("show, reset or any word as a trigger").."."); end;
+	else 
+		if scmd == "show" then 
+			local hasTriggers = false;for _,_ in pairs(Auto_Invite) do hasTriggers = true;break;end;
+			if hasTriggers then
+				if TRIVIA_CONF["language"] == "RU" then Info_Print("Авто приглашения: "..COLOR_GREEN2(table.concat(Auto_Invite, ", ") or "нет"));end;
+				if TRIVIA_CONF["language"] == "EN" then Info_Print("Auto invitations: "..COLOR_GREEN2(table.concat(Auto_Invite, ", ") or "none"));end;
+			else 
+				if TRIVIA_CONF["language"] == "RU" then	Info_Print("Авто приглашения: "..COLOR_GREEN2("нет"));end;
+				if TRIVIA_CONF["language"] == "EN" then	Info_Print("Auto invitations: "..COLOR_GREEN2("none"));end;
+			end;
+		else 
+			if scmd == "reset" then 
+				while(Auto_Invite[ix])do Auto_Invite[ix]=nil;ix=ix+1;end;
+				-- for ix = 1,#Auto_Invite do Auto_Invite[ix] = nil;end;
+				for ix in pairs(Auto_Invite) do Auto_Invite[ix] = nil;end;
+				if TRIVIA_CONF["language"] == "RU" then Info_Print(COLOR_GREEN2("Триггеры сброшены.")); end;
+				if TRIVIA_CONF["language"] == "EN" then Info_Print(COLOR_GREEN2("Triggers reset.")); end;
+			else 
+				-- table.insert(Auto_Invite, scmd)
+				-- while(Auto_Invite[ix])do ix=ix+1;end;
+				-- Auto_Invite[ix]=scmd;
+				for word in string.gmatch(scmd, "%S+") do table.insert(Auto_Invite, word);end;
+			end;
+		end;
+	end;
 end;
 
 function SPAM_CommandHandler(cmd)
@@ -408,6 +449,18 @@ function Trivia_OnEvent(event, arg1)
 	if (event == "COMBAT_TEXT_UPDATE" and arg1=="SPELL_ACTIVE" and arg2=="Arcane Surge") 
 	or (event == "UNIT_COMBAT" and arg1=="target" and arg2=="RESIST") 
 	then ArcaneSurg=5; end;
+	
+	if event == "CHAT_MSG_SAY" or event == "CHAT_MSG_YELL" or event == "CHAT_MSG_WHISPER" and Auto_Invite[1] then 
+		local ix=1;
+		while(Auto_Invite[ix])do 
+			-- if string.find(Auto_Invite[ix],arg1) then 
+			if string.find(string.lower(arg1),string.lower(Auto_Invite[ix])) then 
+				-- SendChatMessage("/invite "..arg2,"WHISPER",nil,GetUnitName("player"));
+				SlashCmdList["INVITE"](arg2);
+			end;
+			ix=ix+1;
+		end;
+	end;
 	
 end;
 
