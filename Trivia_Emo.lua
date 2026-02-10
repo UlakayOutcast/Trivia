@@ -2,7 +2,10 @@ function SEmo(tex,arg)
 	if not arg then arg="emote";end;
 	SendChatMessage(tex,arg,"Common"); 
 end;
-
+local function Info_Print(msg,r,g,b,frame,id)
+	if (not r) then r = 0.8; end; if (not g) then g = 0.4; end; if (not b) then b = 0.8; end;
+	if ( DEFAULT_CHAT_FRAME ) then DEFAULT_CHAT_FRAME:AddMessage(msg, r, g, b, id);end;
+end;
 function TarExNa()
 	if UnitExists("target") then if not UnitIsUnit("player","target") then return UnitName("target");end;end;
 end;
@@ -14,8 +17,9 @@ function Trivia_Emo()
 	SLASH_sad1 = "/sad"; SLASH_sad2 = "/sadness";
 	SLASH_pocket1 = "/pocket"; SLASH_pocket2 = "/steal"; SLASH_pocket3 = "/snitch";
 	SLASH_coin1 = "/coin"; SLASH_coin2 = "/money";
-	SLASH_woof1 = "/woof "; 
-	SLASH_meow1 = "/meow "; 
+	SLASH_woof1 = "/woof"; SLASH_coin2 = "/wolf";
+	SLASH_meow1 = "/meow"; SLASH_coin2 = "/cat";
+	SLASH_emolist1 = "/emolist"; 
 	
 	SlashCmdList["sneeze"] = function(cmd)
 		if TarExNa() then SEmo("sneezes loudly at "..TarExNa().."."); else SEmo("sneezes loudly.");end;
@@ -40,12 +44,18 @@ function Trivia_Emo()
 		if TarExNa() then SEmo("gives the "..TarExNa().." coin."); else if random(0,1)==1 then SEmo("tosses a coin in the air - tails fell out."); else SEmo("tosses a coin in the air - heads have fallen."); end;end;
 	end;
 	
-	SlashCmdList["woof "] = function(cmd)
+	SlashCmdList["woof"] = function(cmd)
 		if TarExNa() then SEmo("barks at "..TarExNa()..". Woof woof.."); else SEmo("barks loudly. Woof woof..");end;
 	end;
 	
-	SlashCmdList["meow "] = function(cmd)
+	SlashCmdList["meow"] = function(cmd)
 		if TarExNa() then SEmo("meows looking at "..TarExNa()..". Meow.."); else SEmo("purrs. Meow..");end;
+	end;
+	
+	
+	
+	SlashCmdList["emolist"] = function(cmd)
+		Info_Print("/(sneeze,chih)(dehydration,water)(buttocks,shlepok)(sad,sadness)(pocket,steal)(coin,money)(woof,wolf)(meow,cat)");
 	end;
 	
 	
