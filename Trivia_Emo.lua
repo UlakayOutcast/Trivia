@@ -55,7 +55,7 @@ function Trivia_Emo()
 	
 	
 	SlashCmdList["emolist"] = function(cmd)
-		Info_Print("/(sneeze,chih)(dehydration,water)(buttocks,shlepok)(sad,sadness)(pocket,steal)(coin,money)(woof,wolf)(meow,cat)");
+		Info_Print("/ (sneeze,chih) (dehydration,water) (buttocks,shlepok) (sad,sadness) (pocket,steal) (coin,money) (woof,wolf) (meow,cat)");
 	end;
 	
 	
