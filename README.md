@@ -1,15 +1,13 @@
-Don't forget to delete "-main" from the name of the folder.
+/Trivia - для получения дополнительной информации.
+/regen - отображает восстановление здоровья и маны.
+/kill - счетчик убийств (глобальных, сессионных, временных).
+/coins - счетчик заработанных монет.
+/calculator (5+5) - калькулятор.
+/link - ссылка на item из базы данных.
+/rest - Показывает количество отдыха.
+/ainv text - авто-приглашения того кто напишет text.
 
-Enter /Trivia for info.
-/regen - displays the regeneration of health and mana.
-/kill - kill counter (global, session, temporary).
-/coins - Counter of earned coins.
-/calculator (5+5) - calculator.
-/link - link of the item from the database.
-/rest - Show the amount of rest.
-/ainv - auto invitations.
-
-A few new emotions:
+Несколько новых эмоций:
 /sneeze
 /dehydration
 /buttocks
